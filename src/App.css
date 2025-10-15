@@ -2693,16 +2693,16 @@ body {
   }
 }
 
-/* Section pour charger depuis une référence */
-.reference-loader-section {
+/* Section pour charger depuis une référence - en haut */
+.reference-loader-section-top {
   padding: 1.5rem;
   background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
   border-radius: var(--radius-lg);
   border: 2px solid #bae6fd;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.reference-loader-section h3 {
+.reference-loader-section-top h3 {
   margin: 0 0 1rem 0;
   font-size: 1rem;
   font-weight: 600;
@@ -2710,11 +2710,6 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-
-.reference-loader-section h3::before {
-  content: "🔄";
-  font-size: 1.25rem;
 }
 
 .reference-input-group {

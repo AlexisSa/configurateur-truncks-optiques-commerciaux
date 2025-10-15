@@ -14,11 +14,9 @@ const ResultsSection = ({
   savedConfigsCount = 0,
   margin = 60,
   setMargin,
-  loadFromReference,
 }) => {
   const [showPdfPreview, setShowPdfPreview] = useState(false);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null);
-  const [referenceInput, setReferenceInput] = useState("");
   const [showPriceDetails, setShowPriceDetails] = useState(false);
 
   const price = calculatePrice(selectedOptions, margin);
@@ -52,45 +50,10 @@ const ResultsSection = ({
     }
   };
 
-  const handleLoadFromReference = () => {
-    if (referenceInput.trim()) {
-      const success = loadFromReference(referenceInput.trim());
-      if (success) {
-        setReferenceInput(""); // Vider le champ après succès
-      }
-    }
-  };
-
   return (
     <div className="price-reference-card">
       <div className="card-header">
         <h2>Résultats de votre configuration</h2>
-      </div>
-
-      {/* Section pour charger depuis une référence */}
-      <div className="reference-loader-section">
-        <h3>Charger depuis une référence</h3>
-        <div className="reference-input-group">
-          <input
-            type="text"
-            value={referenceInput}
-            onChange={(e) => setReferenceInput(e.target.value)}
-            placeholder="Ex: T12FSD0H-OS2LC/LC50P"
-            className="reference-input"
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                handleLoadFromReference();
-              }
-            }}
-          />
-          <button
-            onClick={handleLoadFromReference}
-            className="load-reference-button"
-            disabled={!referenceInput.trim()}
-          >
-            Charger
-          </button>
-        </div>
       </div>
 
       <div className="card-content">

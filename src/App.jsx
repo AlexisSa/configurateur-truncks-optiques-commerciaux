@@ -53,6 +53,44 @@ function App() {
       <main className="app-main">
         <div className="configuration-layout">
           <div className="configuration-left">
+            {/* Section pour charger depuis une référence */}
+            <div className="reference-loader-section-top">
+              <h3>🔄 Charger depuis une référence</h3>
+              <div className="reference-input-group">
+                <input
+                  type="text"
+                  placeholder="Ex: T12FSD0H-OS2LC/LC50P"
+                  className="reference-input"
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      const value = e.target.value.trim();
+                      if (value) {
+                        const success = loadFromReference(value);
+                        if (success) {
+                          e.target.value = "";
+                        }
+                      }
+                    }
+                  }}
+                />
+                <button
+                  onClick={(e) => {
+                    const input = e.target.previousElementSibling;
+                    const value = input.value.trim();
+                    if (value) {
+                      const success = loadFromReference(value);
+                      if (success) {
+                        input.value = "";
+                      }
+                    }
+                  }}
+                  className="load-reference-button"
+                >
+                  Charger
+                </button>
+              </div>
+            </div>
+
             <ConfigurationGrid
               selectedOptions={selectedOptions}
               handleOptionChange={handleOptionChange}
@@ -70,7 +108,6 @@ function App() {
               savedConfigsCount={savedConfigs.length}
               margin={margin}
               setMargin={setMargin}
-              loadFromReference={loadFromReference}
             />
           </div>
         </div>
