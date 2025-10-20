@@ -2814,6 +2814,63 @@ body {
   border-color: #2d32a8;
 }
 
+/* Input de marge personnalisée */
+.custom-margin-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #fde68a;
+}
+
+.custom-margin-input-container label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.custom-margin-input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.custom-margin-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: var(--surface);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  -moz-appearance: textfield;
+}
+
+.custom-margin-input::-webkit-outer-spin-button,
+.custom-margin-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.custom-margin-input:focus {
+  outline: none;
+  border-color: var(--highlight);
+  box-shadow: 0 0 0 3px rgba(54, 59, 199, 0.1);
+}
+
+.custom-margin-input:hover {
+  border-color: var(--border-hover);
+}
+
+.custom-margin-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
 /* Référence cliquable pour copier */
 .result-value.reference {
   user-select: all;
@@ -2970,5 +3027,19 @@ body {
     min-width: 50px;
     padding: 0.5rem 0.75rem;
     font-size: 0.8125rem;
+  }
+
+  .custom-margin-input {
+    padding: 0.5rem 0.625rem;
+    font-size: 0.8125rem;
+  }
+
+  .custom-margin-input-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .custom-margin-input-container label {
+    text-align: center;
   }
 }

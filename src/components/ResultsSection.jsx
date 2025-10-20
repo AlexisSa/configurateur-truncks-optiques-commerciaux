@@ -18,6 +18,7 @@ const ResultsSection = ({
   const [showPdfPreview, setShowPdfPreview] = useState(false);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null);
   const [showPriceDetails, setShowPriceDetails] = useState(false);
+  const [customMarginValue, setCustomMarginValue] = useState("");
 
   const price = calculatePrice(selectedOptions, margin);
   const reference = generateReference(selectedOptions);
@@ -75,6 +76,30 @@ const ResultsSection = ({
                 {marginValue}%
               </button>
             ))}
+          </div>
+          <div className="custom-margin-input-container">
+            <label htmlFor="custom-margin-input">ou</label>
+            <div className="custom-margin-input-wrapper">
+              <input
+                id="custom-margin-input"
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={customMarginValue}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCustomMarginValue(value);
+                  const numValue = parseFloat(value);
+                  if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
+                    setMargin(numValue);
+                  }
+                }}
+                onFocus={(e) => e.target.select()}
+                className="custom-margin-input"
+                placeholder="Marge perso %"
+              />
+            </div>
           </div>
         </div>
 
@@ -221,7 +246,7 @@ const ResultsSection = ({
                 </>
               ) : null}
               <div className="breakdown-item total">
-                <span className="breakdown-label">Total TTC</span>
+                <span className="breakdown-label">Total HT</span>
                 <span className="breakdown-value">
                   {priceBreakdown.total.toFixed(2)} €
                 </span>
