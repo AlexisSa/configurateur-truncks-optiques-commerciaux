@@ -208,7 +208,7 @@ export const generatePdfPreview = async (selectedOptions, margin = 60) => {
 
   try {
     const canvas = await html2canvas(pdfContent, {
-      scale: 3, // Haute résolution pour une qualité maximale
+      scale: 1.5,
       useCORS: true,
       allowTaint: true,
       backgroundColor: "#ffffff",
@@ -435,7 +435,7 @@ export const generatePdfBlob = async (selectedOptions, margin = 60) => {
 
   try {
     const canvas = await html2canvas(pdfContent, {
-      scale: 3, // Haute résolution pour une qualité maximale
+      scale: 1.5,
       useCORS: true,
       allowTaint: true,
       backgroundColor: "#ffffff",
