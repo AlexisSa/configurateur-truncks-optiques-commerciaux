@@ -209,7 +209,7 @@ export const generatePdfPreview = async (selectedOptions, margin = 60) => {
 
   try {
     const canvas = await html2canvas(pdfContent, {
-      scale: 2.5,
+      scale: 3, // Haute résolution pour une qualité maximale
       useCORS: true,
       allowTaint: true,
       backgroundColor: "#ffffff",
@@ -436,7 +436,7 @@ export const generatePdfBlob = async (selectedOptions, margin = 60) => {
 
   try {
     const canvas = await html2canvas(pdfContent, {
-      scale: 1.5, // Réduit de 2 à 1.5 pour diminuer la taille
+      scale: 3, // Haute résolution pour une qualité maximale
       useCORS: true,
       allowTaint: true,
       backgroundColor: "#ffffff",
@@ -450,63 +450,21 @@ export const generatePdfBlob = async (selectedOptions, margin = 60) => {
       removeContainer: true,
     });
 
-    // Optimiser l'image avec une qualité réduite
-    const imgData = canvas.toDataURL("image/jpeg", 0.8); // JPEG avec 80% de qualité
+    // Utiliser PNG pour une qualité maximale sans perte
+    const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
 
     // Ajouter l'image sur une seule page A4
-    pdf.addImage(imgData, "JPEG", 0, 0, 210, 297);
+    pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
 
     // Retourner le PDF en base64
     const pdfOutput = pdf.output("datauristring");
     const base64 = pdfOutput.split(",")[1];
     const size = base64.length * 0.75; // Approximation de la taille en bytes
 
-    // Vérifier la taille et compresser si nécessaire
-    if (size > 4_000_000) {
-      // Si plus de 4MB
-      console.warn("PDF trop volumineux, compression supplémentaire...");
-
-      // Régénérer avec une qualité encore plus faible
-      const canvas2 = await html2canvas(pdfContent, {
-        scale: 1.2, // Encore plus petit
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: "#ffffff",
-        width: 595,
-        height: 842,
-        scrollX: 0,
-        scrollY: 0,
-        windowWidth: 595,
-        windowHeight: 842,
-        logging: false,
-        removeContainer: true,
-      });
-
-      const imgData2 = canvas2.toDataURL("image/jpeg", 0.6); // 60% de qualité
-      const pdf2 = new jsPDF("p", "mm", "a4");
-      pdf2.addImage(imgData2, "JPEG", 0, 0, 210, 297);
-
-      const pdfOutput2 = pdf2.output("datauristring");
-      const base64Compressed = pdfOutput2.split(",")[1];
-      const compressedSize = base64Compressed.length * 0.75;
-
-      console.log(
-        `Taille originale: ${
-          Math.round((size / 1024 / 1024) * 100) / 100
-        }MB, Taille compressée: ${
-          Math.round((compressedSize / 1024 / 1024) * 100) / 100
-        }MB`
-      );
-
-      return {
-        base64: base64Compressed,
-        size: compressedSize,
-        fileName: `trunck-optique-${generateReference(
-          selectedOptions
-        )}-${date.replace(/\//g, "-")}.pdf`,
-      };
-    }
+    console.log(
+      `Taille du PDF: ${Math.round((size / 1024 / 1024) * 100) / 100}MB`
+    );
 
     return {
       base64,
