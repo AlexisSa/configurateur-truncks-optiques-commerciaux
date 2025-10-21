@@ -24,7 +24,7 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
 
   const pdf = new jsPDF("p", "mm", "a4");
   const pageWidth = 210;
-  
+
   const date = new Date().toLocaleDateString("fr-FR");
   const reference = generateReference(selectedOptions);
   const price = calculatePrice(selectedOptions, margin);
@@ -56,19 +56,23 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
   const contentWidth = pageWidth - leftMargin - rightMargin;
 
   // ===== EN-TÊTE =====
-  // Logo (si disponible)
+  // Logo (si disponible) - centré horizontalement
   try {
     const logoImg = new Image();
-    logoImg.src = '/logo.png';
+    logoImg.src = "/logo.png";
     await new Promise((resolve) => {
       logoImg.onload = () => {
-        pdf.addImage(logoImg, 'PNG', pageWidth / 2 - 10, y, 20, 8);
+        // Centrer le logo : (largeur_page - largeur_logo) / 2
+        const logoWidth = 20;
+        const logoHeight = 8;
+        const logoX = (pageWidth - logoWidth) / 2;
+        pdf.addImage(logoImg, "PNG", logoX, y, logoWidth, logoHeight);
         resolve();
       };
       logoImg.onerror = () => resolve(); // Continue sans logo si erreur
       setTimeout(resolve, 100); // Timeout après 100ms
     });
-    y += 10;
+    y += 12; // Plus d'espace après le logo
   } catch (error) {
     // Continue sans logo
     y += 2;
@@ -136,11 +140,11 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
   // Boîte Référence (gauche)
   pdf.setFillColor(...colors.bgGray);
   pdf.roundedRect(leftMargin, y, boxWidth, boxHeight, 1.5, 1.5, "F");
-  
+
   // Bordure gauche colorée
   pdf.setFillColor(...colors.primary);
   pdf.roundedRect(leftMargin, y, 0.6, boxHeight, 0, 0, "F");
-  
+
   pdf.setDrawColor(230, 230, 230);
   pdf.setLineWidth(0.1);
   pdf.roundedRect(leftMargin, y, boxWidth, boxHeight, 1.5, 1.5, "S");
@@ -159,13 +163,13 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
   // Boîte Prix (droite)
   pdf.setFont("helvetica", "normal");
   const rightBoxX = leftMargin + boxWidth + 3;
-  
+
   pdf.setFillColor(...colors.bgGray);
   pdf.roundedRect(rightBoxX, y, boxWidth, boxHeight, 1.5, 1.5, "F");
-  
+
   pdf.setFillColor(...colors.primary);
   pdf.roundedRect(rightBoxX, y, 0.6, boxHeight, 0, 0, "F");
-  
+
   pdf.setDrawColor(230, 230, 230);
   pdf.roundedRect(rightBoxX, y, boxWidth, boxHeight, 1.5, 1.5, "S");
 
@@ -184,11 +188,11 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
   // Prix à l'unité (si quantité > 1)
   if (unitPrice) {
     const unitBoxHeight = 13;
-    
+
     // Fond avec gradient simulé
     pdf.setFillColor(...colors.gradientGray1);
     pdf.roundedRect(leftMargin, y, contentWidth, unitBoxHeight, 1.5, 1.5, "F");
-    
+
     pdf.setDrawColor(...colors.borderLight);
     pdf.setLineWidth(0.3);
     pdf.roundedRect(leftMargin, y, contentWidth, unitBoxHeight, 1.5, 1.5, "S");
@@ -196,11 +200,7 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
     pdf.setTextColor(...colors.textGray);
     pdf.setFontSize(9);
     pdf.setFont("helvetica", "normal");
-    pdf.text(
-      `Prix a l'unite (${quantity} produits)`,
-      leftMargin + 3,
-      y + 4
-    );
+    pdf.text(`Prix a l'unite (${quantity} produits)`, leftMargin + 3, y + 4);
 
     pdf.setFontSize(11);
     pdf.setFont("helvetica", "bold");
@@ -212,13 +212,13 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
 
   // Boîte Délai de fabrication
   const delaiBoxHeight = 13;
-  
+
   pdf.setFillColor(...colors.bgGray);
   pdf.roundedRect(leftMargin, y, contentWidth, delaiBoxHeight, 1.5, 1.5, "F");
-  
+
   pdf.setFillColor(...colors.green);
   pdf.roundedRect(leftMargin, y, 0.6, delaiBoxHeight, 0, 0, "F");
-  
+
   pdf.setDrawColor(230, 230, 230);
   pdf.setLineWidth(0.1);
   pdf.roundedRect(leftMargin, y, contentWidth, delaiBoxHeight, 1.5, 1.5, "S");
@@ -249,10 +249,10 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
 
   // Boîte résumé
   const summaryHeight = 13;
-  
+
   pdf.setFillColor(...colors.bgGray);
   pdf.roundedRect(leftMargin, y, contentWidth, summaryHeight, 1.5, 1.5, "F");
-  
+
   pdf.setDrawColor(230, 230, 230);
   pdf.setLineWidth(0.1);
   pdf.roundedRect(leftMargin, y, contentWidth, summaryHeight, 1.5, 1.5, "S");
@@ -260,9 +260,9 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
   pdf.setTextColor(...colors.text);
   pdf.setFontSize(10);
   pdf.setFont("helvetica", "normal");
-  
+
   const summary = `Trunck : ${selectedOptions.connecteurA}/${selectedOptions.connecteurB} ${selectedOptions.nombreFibres} Fibres ${selectedOptions.modeFibre} ${selectedOptions.typeCable} de ${selectedOptions.longueur}m avec test de ${selectedOptions.typeTest}`;
-  
+
   const summaryLines = pdf.splitTextToSize(summary, contentWidth - 6);
   let summaryY = y + 5;
   summaryLines.forEach((line) => {
@@ -356,7 +356,7 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
     pdf.setTextColor(...colors.text);
     pdf.setFontSize(9);
     pdf.setFont("helvetica", "normal");
-    
+
     let itemY = specY + 10;
     spec.items.forEach((item) => {
       const parts = item.split(" : ");
@@ -395,7 +395,7 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
 
   // Boîte Performance
   const perfBoxHeight = 20;
-  
+
   pdf.setFillColor(...colors.lightBlue);
   pdf.roundedRect(leftMargin, y, contentWidth, perfBoxHeight, 1.5, 1.5, "F");
 
@@ -434,11 +434,11 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
 
   y += 7;
 
-  // 3 boîtes de contact
-  const contactBoxWidth = (contentWidth - 20) / 3;
+  // 3 boîtes de contact parfaitement centrées
+  const contactBoxWidth = 50; // Largeur fixe pour chaque boîte
   const contactBoxHeight = 14;
-  const maxContactWidth = 130;
-  const startX = leftMargin + (contentWidth - maxContactWidth) / 2;
+  const totalContactWidth = (contactBoxWidth * 3) + (2 * 4); // 3 boîtes + 2 espaces
+  const startX = (pageWidth - totalContactWidth) / 2; // Centrage parfait
 
   const contacts = [
     { title: "Telephone", info: "03.65.61.04.20" },
@@ -450,21 +450,34 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
     const contactX = startX + index * (contactBoxWidth + 4);
 
     pdf.setFillColor(...colors.bgGray);
-    pdf.roundedRect(contactX, y, contactBoxWidth, contactBoxHeight, 1.5, 1.5, "F");
+    pdf.roundedRect(
+      contactX,
+      y,
+      contactBoxWidth,
+      contactBoxHeight,
+      1.5,
+      1.5,
+      "F"
+    );
 
     pdf.setDrawColor(230, 230, 230);
     pdf.setLineWidth(0.1);
-    pdf.roundedRect(contactX, y, contactBoxWidth, contactBoxHeight, 1.5, 1.5, "S");
+    pdf.roundedRect(
+      contactX,
+      y,
+      contactBoxWidth,
+      contactBoxHeight,
+      1.5,
+      1.5,
+      "S"
+    );
 
     pdf.setTextColor(...colors.text);
     pdf.setFontSize(9);
     pdf.setFont("helvetica", "bold");
-    pdf.text(
-      contact.title,
-      contactX + contactBoxWidth / 2,
-      y + 5,
-      { align: "center" }
-    );
+    pdf.text(contact.title, contactX + contactBoxWidth / 2, y + 5, {
+      align: "center",
+    });
 
     pdf.setTextColor(...colors.textGray);
     pdf.setFontSize(8);
@@ -486,21 +499,21 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
   pdf.setTextColor(...colors.textLightGray);
   pdf.setFontSize(7);
   pdf.setFont("helvetica", "normal");
-  
+
   pdf.text(
     "Ce devis est valable 30 jours à compter de sa date de génération",
     pageWidth / 2,
     y,
     { align: "center" }
   );
-  
+
   pdf.text(
     "Tous nos produits sont conformes aux normes CE et aux standards internationaux",
     pageWidth / 2,
     y + 3,
     { align: "center" }
   );
-  
+
   pdf.text(
     "Conditions de vente disponibles sur demande | SIRET: 521 756 502 00030",
     pageWidth / 2,
@@ -523,7 +536,7 @@ export const exportToNativePDF = async (selectedOptions, margin = 60) => {
     const date = new Date().toLocaleDateString("fr-FR").replace(/\//g, "-");
     const reference = generateReference(selectedOptions);
     const fileName = `trunck-optique-${reference}-${date}.pdf`;
-    
+
     pdf.save(fileName);
   } catch (error) {
     console.error("Erreur lors de l'export PDF natif:", error);
@@ -532,13 +545,19 @@ export const exportToNativePDF = async (selectedOptions, margin = 60) => {
 };
 
 // Fonction pour générer une prévisualisation du PDF natif
-export const generateNativePdfPreview = async (selectedOptions, margin = 60) => {
+export const generateNativePdfPreview = async (
+  selectedOptions,
+  margin = 60
+) => {
   try {
     const pdf = await generateNativePdf(selectedOptions, margin);
     const pdfDataUri = pdf.output("dataurlstring");
     return pdfDataUri;
   } catch (error) {
-    console.error("Erreur lors de la génération de la prévisualisation:", error);
+    console.error(
+      "Erreur lors de la génération de la prévisualisation:",
+      error
+    );
     throw error;
   }
 };
