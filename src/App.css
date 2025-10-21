@@ -1123,6 +1123,42 @@ body {
   transform: translateY(0);
 }
 
+.native-pdf-button {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.native-pdf-button:hover {
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+}
+
+.native-pdf-button::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
 /* Section contact */
 .contact-section {
   display: flex;

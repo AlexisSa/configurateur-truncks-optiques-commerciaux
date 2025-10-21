@@ -7,6 +7,7 @@ import {
   getPriceBreakdown,
 } from "../utils/calculations.js";
 import { generatePdfPreview, exportToPDF } from "../utils/pdfGenerator.js";
+import { exportToNativePDF } from "../utils/pdfGeneratorNative.js";
 
 const ResultsSection = ({
   selectedOptions,
@@ -48,6 +49,14 @@ const ResultsSection = ({
       await exportToPDF(selectedOptions, margin);
     } catch (error) {
       console.error("Erreur lors de l'export PDF:", error);
+    }
+  };
+
+  const handleExportToNativePDF = async () => {
+    try {
+      await exportToNativePDF(selectedOptions, margin);
+    } catch (error) {
+      console.error("Erreur lors de l'export PDF natif:", error);
     }
   };
 
@@ -324,13 +333,24 @@ const ResultsSection = ({
             <button
               onClick={handleExportToPDF}
               className="export-button"
-              title="Exporter en PDF"
+              title="Exporter en PDF (Image)"
               disabled={
                 !isConfigurationComplete(selectedOptions) ||
                 availability?.available === false
               }
             >
-              📄 Exporter en PDF
+              📄 Export PDF (Image)
+            </button>
+            <button
+              onClick={handleExportToNativePDF}
+              className="export-button native-pdf-button"
+              title="Exporter en PDF Pro (Qualité maximale)"
+              disabled={
+                !isConfigurationComplete(selectedOptions) ||
+                availability?.available === false
+              }
+            >
+              ⚡ Export PDF Pro
             </button>
           </div>
         </div>
