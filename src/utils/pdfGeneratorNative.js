@@ -50,47 +50,71 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
     borderLight: [203, 213, 225], // #cbd5e1
   };
 
-  let y = 20;
+  let y = 15;
   const leftMargin = 20;
   const rightMargin = 20;
   const contentWidth = pageWidth - leftMargin - rightMargin;
 
   // ===== EN-TÊTE =====
-  // Bordure en bas
-  pdf.setDrawColor(...colors.primary);
-  pdf.setLineWidth(0.5);
-  pdf.line(leftMargin, y + 20, pageWidth - rightMargin, y + 20);
+  // Logo (si disponible)
+  try {
+    const logoImg = new Image();
+    logoImg.src = '/logo.png';
+    await new Promise((resolve) => {
+      logoImg.onload = () => {
+        pdf.addImage(logoImg, 'PNG', pageWidth / 2 - 10, y, 20, 8);
+        resolve();
+      };
+      logoImg.onerror = () => resolve(); // Continue sans logo si erreur
+      setTimeout(resolve, 100); // Timeout après 100ms
+    });
+    y += 10;
+  } catch (error) {
+    // Continue sans logo
+    y += 2;
+  }
 
   // Titre principal
   pdf.setTextColor(...colors.primary);
   pdf.setFontSize(18);
   pdf.setFont("helvetica", "bold");
-  pdf.text("Configurateur de Truncks Optiques", pageWidth / 2, y + 10, {
+  pdf.text("Configurateur de Truncks Optiques", pageWidth / 2, y, {
     align: "center",
   });
+
+  y += 5;
 
   // Sous-titre 1
   pdf.setTextColor(...colors.textGray);
   pdf.setFontSize(11);
   pdf.setFont("helvetica", "normal");
   pdf.text(
-    `Devis technique généré le ${date} | Référence: ${reference}`,
+    `Devis technique genere le ${date} | Reference: ${reference}`,
     pageWidth / 2,
-    y + 15,
+    y,
     { align: "center" }
   );
+
+  y += 3.5;
 
   // Sous-titre 2
   pdf.setTextColor(...colors.textLightGray);
   pdf.setFontSize(10);
   pdf.text(
-    "Spécialiste en solutions optiques professionnelles",
+    "Specialiste en solutions optiques professionnelles",
     pageWidth / 2,
-    y + 18.5,
+    y,
     { align: "center" }
   );
 
-  y = 45;
+  y += 3;
+
+  // Bordure en bas
+  pdf.setDrawColor(...colors.primary);
+  pdf.setLineWidth(0.5);
+  pdf.line(leftMargin, y, pageWidth - rightMargin, y);
+
+  y += 10;
 
   // ===== SECTION: RÉSULTATS DE LA CONFIGURATION =====
   pdf.setTextColor(...colors.primary);
@@ -124,7 +148,7 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
   pdf.setTextColor(...colors.text);
   pdf.setFontSize(9);
   pdf.setFont("helvetica", "normal");
-  pdf.text("📋 Référence à commander", leftMargin + 3, y + 4);
+  pdf.text("Reference a commander", leftMargin + 3, y + 4);
 
   pdf.setFontSize(11);
   pdf.setFont("helvetica", "bold");
@@ -148,7 +172,7 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
   pdf.setTextColor(...colors.text);
   pdf.setFontSize(9);
   pdf.setFont("helvetica", "normal");
-  pdf.text("💰 Prix HT", rightBoxX + 3, y + 4);
+  pdf.text("Prix HT", rightBoxX + 3, y + 4);
 
   pdf.setFontSize(13);
   pdf.setFont("helvetica", "bold");
@@ -173,7 +197,7 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
     pdf.setFontSize(9);
     pdf.setFont("helvetica", "normal");
     pdf.text(
-      `📦 Prix à l'unité (${quantity} produits)`,
+      `Prix a l'unite (${quantity} produits)`,
       leftMargin + 3,
       y + 4
     );
@@ -202,7 +226,7 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
   pdf.setTextColor(...colors.text);
   pdf.setFontSize(9);
   pdf.setFont("helvetica", "normal");
-  pdf.text("📦 Délai de fabrication", leftMargin + 3, y + 4);
+  pdf.text("Delai de fabrication", leftMargin + 3, y + 4);
 
   pdf.setFontSize(11);
   pdf.setFont("helvetica", "bold");
@@ -267,44 +291,40 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
 
   const specs = [
     {
-      icon: "🔌",
       title: "Connecteurs",
       color: colors.primary,
       items: [
         `Connecteur A : ${selectedOptions.connecteurA}`,
         `Connecteur B : ${selectedOptions.connecteurB}`,
       ],
-      note: "Type standardisé pour compatibilité maximale",
+      note: "Type standardise pour compatibilite maximale",
     },
     {
-      icon: "📡",
       title: "Fibres optiques",
       color: colors.green,
       items: [
         `Nombre : ${selectedOptions.nombreFibres} fibres`,
         `Mode : ${selectedOptions.modeFibre}`,
       ],
-      note: "Performance optimisée selon l'application",
+      note: "Performance optimisee selon l'application",
     },
     {
-      icon: "🔗",
-      title: "Câble",
+      title: "Cable",
       color: colors.red,
       items: [
         `Type : ${selectedOptions.typeCable}`,
         `Longueur : ${selectedOptions.longueur}m`,
       ],
-      note: "Résistance mécanique et environnementale",
+      note: "Resistance mecanique et environnementale",
     },
     {
-      icon: "🧪",
-      title: "Tests & Qualité",
+      title: "Tests & Qualite",
       color: colors.orange,
       items: [
         `Test : ${selectedOptions.typeTest}`,
-        `Épanouissement : ${selectedOptions.epanouissement}`,
+        `Epanouissement : ${selectedOptions.epanouissement}`,
       ],
-      note: "Contrôle qualité rigoureux",
+      note: "Controle qualite rigoureux",
     },
   ];
 
@@ -330,7 +350,7 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
     pdf.setTextColor(...spec.color);
     pdf.setFontSize(10);
     pdf.setFont("helvetica", "bold");
-    pdf.text(`${spec.icon} ${spec.title}`, specX + 3, specY + 5);
+    pdf.text(spec.title, specX + 3, specY + 5);
 
     // Items
     pdf.setTextColor(...colors.text);
@@ -389,14 +409,14 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
   pdf.setTextColor(...colors.blue);
   pdf.setFontSize(10);
   pdf.setFont("helvetica", "bold");
-  pdf.text("⚡ Performance", leftMargin + 3, y + 5);
+  pdf.text("Performance", leftMargin + 3, y + 5);
 
   pdf.setTextColor(...colors.text);
   pdf.setFontSize(9);
   pdf.setFont("helvetica", "normal");
-  pdf.text("• Bande passante optimisée", leftMargin + 3, y + 10);
-  pdf.text("• Faibles pertes d'insertion", leftMargin + 3, y + 14);
-  pdf.text("• Compatible normes internationales", leftMargin + 3, y + 18);
+  pdf.text("- Bande passante optimisee", leftMargin + 3, y + 10);
+  pdf.text("- Faibles pertes d'insertion", leftMargin + 3, y + 14);
+  pdf.text("- Compatible normes internationales", leftMargin + 3, y + 18);
 
   y += perfBoxHeight + 10;
 
@@ -421,9 +441,9 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
   const startX = leftMargin + (contentWidth - maxContactWidth) / 2;
 
   const contacts = [
-    { icon: "📞", title: "Téléphone", info: "03.65.61.04.20" },
-    { icon: "✉️", title: "Email", info: "info.xeilom@xeilom.fr" },
-    { icon: "🌐", title: "Site web", info: "xeilom.fr" },
+    { title: "Telephone", info: "03.65.61.04.20" },
+    { title: "Email", info: "info.xeilom@xeilom.fr" },
+    { title: "Site web", info: "xeilom.fr" },
   ];
 
   contacts.forEach((contact, index) => {
@@ -440,7 +460,7 @@ export const generateNativePdf = async (selectedOptions, margin = 60) => {
     pdf.setFontSize(9);
     pdf.setFont("helvetica", "bold");
     pdf.text(
-      `${contact.icon} ${contact.title}`,
+      contact.title,
       contactX + contactBoxWidth / 2,
       y + 5,
       { align: "center" }
