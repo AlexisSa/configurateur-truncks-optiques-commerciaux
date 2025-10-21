@@ -406,8 +406,7 @@ export const generatePdfBlob = async (selectedOptions, margin = 60) => {
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 400px; margin: 0 auto;">
           <div style="text-align: center; padding: 6px; background: #f8f9fa; border-radius: 4px;">
             <p style="margin: 0 0 3px 0; font-weight: bold; color: #333; font-size: 9px;">📞 Téléphone</p>
-            <p style="margin: 0 0 1px 0; color: #666; font-size: 8px;">03.65.61.04.20</p>
-            <p style="margin: 0; color: #666; font-size: 8px;">02.53.35.60.40</p>
+            <p style="margin: 0; color: #666; font-size: 8px;">03.65.61.04.20</p>
           </div>
           <div style="text-align: center; padding: 6px; background: #f8f9fa; border-radius: 4px;">
             <p style="margin: 0 0 3px 0; font-weight: bold; color: #333; font-size: 9px;">✉️ Email</p>
