@@ -7,7 +7,6 @@ import {
   getPriceBreakdown,
 } from "../utils/calculations.js";
 import { generatePdfPreview, exportToPDF } from "../utils/pdfGenerator.js";
-import { exportToNativePDF } from "../utils/pdfGeneratorNative.js";
 
 const ResultsSection = ({
   selectedOptions,
@@ -49,14 +48,6 @@ const ResultsSection = ({
       await exportToPDF(selectedOptions, margin);
     } catch (error) {
       console.error("Erreur lors de l'export PDF:", error);
-    }
-  };
-
-  const handleExportToNativePDF = async () => {
-    try {
-      await exportToNativePDF(selectedOptions, margin);
-    } catch (error) {
-      console.error("Erreur lors de l'export PDF natif:", error);
     }
   };
 
@@ -127,7 +118,7 @@ const ResultsSection = ({
         <div className="result-item">
           <div className="result-label">
             <span className="label-icon">💰</span>
-            <span>Prix</span>
+            <span>Prix HT</span>
           </div>
           <div className="price-with-toggle">
             <div
@@ -269,7 +260,7 @@ const ResultsSection = ({
             <div className="result-item">
               <div className="result-label">
                 <span className="label-icon">💰</span>
-                <span>Prix à l'unité</span>
+                <span>Prix à l'unité HT</span>
               </div>
               <div className="result-value">{unitPrice.toFixed(2)} €</div>
             </div>
@@ -333,24 +324,13 @@ const ResultsSection = ({
             <button
               onClick={handleExportToPDF}
               className="export-button"
-              title="Exporter en PDF (Image)"
+              title="Exporter en PDF"
               disabled={
                 !isConfigurationComplete(selectedOptions) ||
                 availability?.available === false
               }
             >
-              📄 Export PDF (Image)
-            </button>
-            <button
-              onClick={handleExportToNativePDF}
-              className="export-button native-pdf-button"
-              title="Exporter en PDF Pro (Qualité maximale)"
-              disabled={
-                !isConfigurationComplete(selectedOptions) ||
-                availability?.available === false
-              }
-            >
-              ⚡ Export PDF Pro
+              📄 Exporter en PDF
             </button>
           </div>
         </div>
