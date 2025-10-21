@@ -56,7 +56,7 @@ export const generatePdfPreview = async (selectedOptions, margin = 60) => {
         </div>
         
         <div style="background: #f8f9fa; padding: 8px; border-radius: 4px; border-left: 2px solid #363bc7;">
-          <h3 style="margin: 0 0 3px 0; color: #333; font-size: 9px;">💰 Prix</h3>
+          <h3 style="margin: 0 0 3px 0; color: #333; font-size: 9px;">💰 Prix HT</h3>
           <p style="margin: 0; font-size: 13px; font-weight: bold; color: #363bc7;">${
             calculatePrice(selectedOptions, margin)
               ? `${calculatePrice(selectedOptions, margin)} €`
@@ -165,22 +165,13 @@ export const generatePdfPreview = async (selectedOptions, margin = 60) => {
     <div style="margin-bottom: 15px;">
       <h2 style="color: #363bc7; border-bottom: 1px solid #ddd; padding-bottom: 3px; margin-bottom: 8px; font-size: 12px;">Informations complémentaires</h2>
       
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+      <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
         <div style="background: #f0f9ff; padding: 8px; border-radius: 4px; border-left: 3px solid #0284c7;">
           <h4 style="margin: 0 0 6px 0; color: #0284c7; font-size: 10px;">⚡ Performance</h4>
           <div style="font-size: 9px; line-height: 1.3;">
             <div style="margin-bottom: 3px;">• Bande passante optimisée</div>
             <div style="margin-bottom: 3px;">• Faibles pertes d'insertion</div>
             <div style="margin-bottom: 3px;">• Compatible normes internationales</div>
-          </div>
-        </div>
-        
-        <div style="background: #f0fdf4; padding: 8px; border-radius: 4px; border-left: 3px solid #16a34a;">
-          <h4 style="margin: 0 0 6px 0; color: #16a34a; font-size: 10px;">🛡️ Garanties</h4>
-          <div style="font-size: 9px; line-height: 1.3;">
-            <div style="margin-bottom: 3px;">• Garantie 2 ans</div>
-            <div style="margin-bottom: 3px;">• Tests de conformité</div>
-            <div style="margin-bottom: 3px;">• Support technique inclus</div>
           </div>
         </div>
       </div>
@@ -296,7 +287,7 @@ export const generatePdfBlob = async (selectedOptions, margin = 60) => {
         </div>
         
         <div style="background: #f8f9fa; padding: 8px; border-radius: 4px; border-left: 2px solid #363bc7;">
-          <h3 style="margin: 0 0 3px 0; color: #333; font-size: 9px;">💰 Prix</h3>
+          <h3 style="margin: 0 0 3px 0; color: #333; font-size: 9px;">💰 Prix HT</h3>
           <p style="margin: 0; font-size: 13px; font-weight: bold; color: #363bc7;">${
             calculatePrice(selectedOptions, margin)
               ? `${calculatePrice(selectedOptions, margin)} €`
@@ -399,22 +390,13 @@ export const generatePdfBlob = async (selectedOptions, margin = 60) => {
       <div style="margin-bottom: 15px;">
         <h2 style="color: #363bc7; border-bottom: 1px solid #ddd; padding-bottom: 3px; margin-bottom: 8px; font-size: 12px;">Informations complémentaires</h2>
         
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
           <div style="background: #f0f9ff; padding: 8px; border-radius: 4px; border-left: 3px solid #0284c7;">
             <h4 style="margin: 0 0 6px 0; color: #0284c7; font-size: 10px;">⚡ Performance</h4>
             <div style="font-size: 9px; line-height: 1.3;">
               <div style="margin-bottom: 3px;">• Bande passante optimisée</div>
               <div style="margin-bottom: 3px;">• Faibles pertes d'insertion</div>
               <div style="margin-bottom: 3px;">• Compatible normes internationales</div>
-            </div>
-          </div>
-          
-          <div style="background: #f0fdf4; padding: 8px; border-radius: 4px; border-left: 3px solid #16a34a;">
-            <h4 style="margin: 0 0 6px 0; color: #16a34a; font-size: 10px;">🛡️ Garanties</h4>
-            <div style="font-size: 9px; line-height: 1.3;">
-              <div style="margin-bottom: 3px;">• Garantie 2 ans</div>
-              <div style="margin-bottom: 3px;">• Tests de conformité</div>
-              <div style="margin-bottom: 3px;">• Support technique inclus</div>
             </div>
           </div>
         </div>
@@ -635,7 +617,7 @@ export const generatePdfForEmail = async (selectedOptions, margin = 60) => {
   yPosition += 8;
 
   pdf.setFont("helvetica", "normal");
-  pdf.text("Prix public:", 20, yPosition);
+  pdf.text("Prix public HT:", 20, yPosition);
   pdf.setFont("helvetica", "bold");
   pdf.setTextColor(54, 59, 199);
   pdf.text(`${price} €`, 80, yPosition);
