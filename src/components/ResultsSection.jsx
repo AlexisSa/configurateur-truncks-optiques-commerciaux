@@ -65,7 +65,7 @@ const ResultsSection = ({
             <span>Marge commerciale</span>
           </div>
           <div className="margin-selector">
-            {[0, 10, 20, 30, 40, 50, 60].map((marginValue) => (
+            {[0, 25, 30, 40, 50, 60].map((marginValue) => (
               <button
                 key={marginValue}
                 onClick={() => setMargin(marginValue)}
@@ -73,7 +73,7 @@ const ResultsSection = ({
                   margin === marginValue ? "active" : ""
                 }`}
               >
-                {marginValue}%
+                {marginValue === 0 ? "PR" : `${marginValue}%`}
               </button>
             ))}
           </div>
@@ -83,7 +83,7 @@ const ResultsSection = ({
               <input
                 id="custom-margin-input"
                 type="number"
-                min="0"
+                min="25"
                 max="100"
                 step="0.1"
                 value={customMarginValue}
@@ -91,13 +91,13 @@ const ResultsSection = ({
                   const value = e.target.value;
                   setCustomMarginValue(value);
                   const numValue = parseFloat(value);
-                  if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
+                  if (!isNaN(numValue) && numValue >= 25 && numValue <= 100) {
                     setMargin(numValue);
                   }
                 }}
                 onFocus={(e) => e.target.select()}
                 className="custom-margin-input"
-                placeholder="Marge perso %"
+                placeholder="Min 25%"
               />
             </div>
           </div>
