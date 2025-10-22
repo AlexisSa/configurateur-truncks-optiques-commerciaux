@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /
+
+# Empêcher l'indexation du configurateur de truncks optiques
+# Accès réservé aux utilisateurs autorisés

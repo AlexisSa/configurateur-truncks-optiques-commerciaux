@@ -1123,42 +1123,6 @@ body {
   transform: translateY(0);
 }
 
-.native-pdf-button {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-.native-pdf-button:hover {
-  background: linear-gradient(135deg, #047857 0%, #065f46 100%);
-}
-
-.native-pdf-button::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
-  transform: rotate(45deg);
-  animation: shimmer 3s infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) translateY(-100%) rotate(45deg);
-  }
-  100% {
-    transform: translateX(100%) translateY(100%) rotate(45deg);
-  }
-}
-
 /* Section contact */
 .contact-section {
   display: flex;
@@ -1486,6 +1450,289 @@ body {
 
   .modal-body {
     padding: 1rem;
+  }
+}
+
+/* ===== AUTHENTIFICATION FIREBASE ===== */
+
+/* Écran de chargement */
+.auth-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--background);
+  gap: 1rem;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border);
+  border-top: 4px solid var(--highlight);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.auth-loading p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* Écran d'accès requis */
+.auth-required {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--background);
+  padding: 2rem;
+}
+
+.auth-message {
+  text-align: center;
+  background: var(--surface);
+  padding: 3rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  max-width: 500px;
+  width: 100%;
+}
+
+.auth-message h2 {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.auth-message p {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.auth-message .login-button {
+  background: var(--highlight);
+  color: white;
+  border: none;
+  padding: 0.875rem 2rem;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1.5rem;
+}
+
+.auth-message .login-button:hover {
+  background: #2d32a8;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.hub-redirect {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.hub-link {
+  color: var(--highlight);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.hub-link:hover {
+  text-decoration: underline;
+}
+
+/* Modal de connexion */
+.login-modal {
+  max-width: 450px;
+  width: 90vw;
+}
+
+.login-info {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--surface-hover);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.login-info p {
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+}
+
+.login-info p:first-child {
+  color: var(--highlight);
+  font-weight: 600;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.login-form .form-group label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.login-form .form-group input {
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  background: var(--surface);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.login-form .form-group input:focus {
+  outline: none;
+  border-color: var(--highlight);
+  box-shadow: 0 0 0 3px rgba(54, 59, 199, 0.1);
+}
+
+.login-form .form-group input::placeholder {
+  color: var(--text-muted);
+}
+
+.login-form .login-button {
+  background: var(--highlight);
+  color: white;
+  border: none;
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-form .login-button:hover:not(:disabled) {
+  background: #2d32a8;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.login-form .login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.login-form .error-message {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: var(--error);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.login-footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.login-footer p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.login-footer .hub-link {
+  color: var(--highlight);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-footer .hub-link:hover {
+  text-decoration: underline;
+}
+
+/* Informations utilisateur dans le header */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--surface-hover);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.user-email {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.logout-button {
+  background: var(--error);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Responsive pour l'authentification */
+@media (max-width: 768px) {
+  .auth-message {
+    padding: 2rem 1.5rem;
+  }
+
+  .auth-message h2 {
+    font-size: 1.25rem;
+  }
+
+  .user-details {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .user-email {
+    font-size: 0.8rem;
+  }
+
+  .logout-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.7rem;
   }
 }
 
