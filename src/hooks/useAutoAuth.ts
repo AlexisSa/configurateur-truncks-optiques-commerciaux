@@ -8,6 +8,7 @@ import {
   autoSignInWithToken,
   AuthParams,
 } from "../utils/firebaseAuth";
+import { debugAuthParams } from "../utils/debugAuth";
 
 export interface AutoAuthState {
   user: User | null;
@@ -46,15 +47,10 @@ export const useAutoAuth = (): AutoAuthReturn => {
         return;
       }
 
-      // Vérifier si le token est expiré
-      if (isTokenExpired(authParams.expires)) {
-        setState({
-          user: null,
-          loading: false,
-          error: "Token d'authentification expiré",
-          isAuthenticated: false,
-        });
-        return;
+      // Vérifier si le token est expiré (mais continuer quand même pour permettre le fallback)
+      const tokenExpired = isTokenExpired(authParams.expires);
+      if (tokenExpired) {
+        console.warn("Token expiré détecté, tentative de validation côté serveur...");
       }
 
       // Tenter la connexion automatique
@@ -71,10 +67,17 @@ export const useAutoAuth = (): AutoAuthReturn => {
         // Nettoyer l'URL après connexion réussie
         cleanAuthParamsFromURL();
       } else {
+        let errorMessage = result.error || "Échec de l'authentification";
+        
+        // Message plus informatif pour les tokens expirés
+        if (tokenExpired && result.error?.includes("expiré")) {
+          errorMessage = "Session expirée. Veuillez vous reconnecter via le Hub ou utiliser la connexion manuelle.";
+        }
+        
         setState({
           user: null,
           loading: false,
-          error: result.error || "Échec de l'authentification",
+          error: errorMessage,
           isAuthenticated: false,
         });
       }
@@ -95,6 +98,7 @@ export const useAutoAuth = (): AutoAuthReturn => {
 
   useEffect(() => {
     const authParams = getAuthParamsFromURL();
+    debugAuthParams(); // Debug en développement
     performAuth(authParams);
   }, []);
 

@@ -83,12 +83,13 @@ export const verifyTokenWithBackend = async (
  * Vérifie si un token est expiré
  */
 export const isTokenExpired = (expires?: string): boolean => {
-  if (!expires) return true;
-
+  if (!expires) return false; // Si pas d'expiration fournie, on assume qu'il est valide
+  
   const expirationTime = parseInt(expires, 10);
   const currentTime = Math.floor(Date.now() / 1000);
-
-  return currentTime >= expirationTime;
+  
+  // Ajouter une marge de 5 minutes pour éviter les problèmes de synchronisation
+  return currentTime >= (expirationTime - 300);
 };
 
 /**

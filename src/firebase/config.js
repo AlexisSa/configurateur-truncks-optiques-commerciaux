@@ -14,7 +14,8 @@ const firebaseConfig = {
 };
 
 // Éviter la double initialisation
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+const app =
+  getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
 // Initialiser Firebase Auth
 export const auth = getAuth(app);
