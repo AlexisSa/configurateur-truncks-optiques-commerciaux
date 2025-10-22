@@ -10,6 +10,7 @@ import {
   SaveModal,
 } from "./components/index.js";
 import AuthGuard from "./components/AuthGuard.jsx";
+import AutoAuthGuard from "./components/AutoAuthGuard.jsx";
 
 function App() {
   const [showPresetModal, setShowPresetModal] = useState(false);
@@ -39,7 +40,7 @@ function App() {
   } = useConfiguration();
 
   return (
-    <AuthGuard>
+    <AutoAuthGuard fallbackToManualAuth={true}>
       <div className="app">
         <Header />
 
@@ -137,7 +138,7 @@ function App() {
         {/* Notifications toast */}
         <ToastContainer toasts={toasts} removeToast={removeToast} />
       </div>
-    </AuthGuard>
+    </AutoAuthGuard>
   );
 }
 
