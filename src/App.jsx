@@ -30,6 +30,7 @@ function App() {
     getFieldState,
     toasts,
     removeToast,
+    addToast,
     // Marge
     margin,
     setMargin,
@@ -108,6 +109,7 @@ function App() {
               savedConfigsCount={savedConfigs.length}
               margin={margin}
               setMargin={setMargin}
+              addToast={addToast}
             />
           </div>
         </div>

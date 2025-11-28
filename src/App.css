@@ -2877,6 +2877,44 @@ body {
   position: relative;
 }
 
+/* Référence avec bouton de copie */
+.reference-with-copy {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.copy-reference-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  background: var(--surface);
+  color: var(--text-secondary, #666);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  opacity: 0.7;
+}
+
+.copy-reference-button:hover {
+  background: var(--highlight);
+  color: var(--surface);
+  border-color: var(--highlight);
+  opacity: 1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(54, 59, 199, 0.2);
+}
+
+.copy-reference-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(54, 59, 199, 0.15);
+}
+
 /* Prix avec bouton de détail */
 .price-with-toggle {
   display: flex;

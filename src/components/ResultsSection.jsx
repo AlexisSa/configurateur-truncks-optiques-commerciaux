@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Copy } from "lucide-react";
 import {
   calculatePrice,
   generateReference,
@@ -14,6 +15,7 @@ const ResultsSection = ({
   savedConfigsCount = 0,
   margin = 60,
   setMargin,
+  addToast,
 }) => {
   const [showPdfPreview, setShowPdfPreview] = useState(false);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null);
@@ -48,6 +50,22 @@ const ResultsSection = ({
       await exportToPDF(selectedOptions, margin);
     } catch (error) {
       console.error("Erreur lors de l'export PDF:", error);
+    }
+  };
+
+  const handleCopyReference = async () => {
+    if (!reference) return;
+
+    try {
+      await navigator.clipboard.writeText(reference);
+      if (addToast) {
+        addToast("success", "Copié", "Référence copiée dans le presse-papiers");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la copie:", error);
+      if (addToast) {
+        addToast("error", "Erreur", "Impossible de copier la référence");
+      }
     }
   };
 
@@ -108,10 +126,22 @@ const ResultsSection = ({
             <span className="label-icon">📋</span>
             <span>Référence à commander</span>
           </div>
-          <div
-            className={`result-value ${reference ? "reference" : "incomplete"}`}
-          >
-            {reference || "Complétez la configuration"}
+          <div className="reference-with-copy">
+            <div
+              className={`result-value ${reference ? "reference" : "incomplete"}`}
+            >
+              {reference || "Complétez la configuration"}
+            </div>
+            {reference && (
+              <button
+                className="copy-reference-button"
+                onClick={handleCopyReference}
+                title="Copier la référence"
+                aria-label="Copier la référence"
+              >
+                <Copy size={16} />
+              </button>
+            )}
           </div>
         </div>
 
