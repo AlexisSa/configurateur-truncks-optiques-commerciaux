@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy } from "lucide-react";
+import { Copy, ChevronDown, ChevronUp } from "lucide-react";
 import {
   calculatePrice,
   generateReference,
@@ -69,6 +69,23 @@ const ResultsSection = ({
     }
   };
 
+  const handleCopyPrice = async () => {
+    if (!price) return;
+
+    const priceText = `${price} €`;
+    try {
+      await navigator.clipboard.writeText(priceText);
+      if (addToast) {
+        addToast("success", "Copié", "Prix copié dans le presse-papiers");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la copie:", error);
+      if (addToast) {
+        addToast("error", "Erreur", "Impossible de copier le prix");
+      }
+    }
+  };
+
   return (
     <div className="price-reference-card">
       <div className="card-header">
@@ -126,7 +143,7 @@ const ResultsSection = ({
             <span className="label-icon">📋</span>
             <span>Référence à commander</span>
           </div>
-          <div className="reference-with-copy">
+          <div className="value-with-actions">
             <div
               className={`result-value ${reference ? "reference" : "incomplete"}`}
             >
@@ -134,7 +151,7 @@ const ResultsSection = ({
             </div>
             {reference && (
               <button
-                className="copy-reference-button"
+                className="copy-button"
                 onClick={handleCopyReference}
                 title="Copier la référence"
                 aria-label="Copier la référence"
@@ -150,7 +167,7 @@ const ResultsSection = ({
             <span className="label-icon">💰</span>
             <span>Prix HT</span>
           </div>
-          <div className="price-with-toggle">
+          <div className="value-with-actions">
             <div
               className={`result-value ${
                 price
@@ -167,15 +184,29 @@ const ResultsSection = ({
                 : "Complétez la configuration"}
             </div>
             {price && (
-              <button
-                className="price-detail-toggle"
-                onClick={() => setShowPriceDetails(!showPriceDetails)}
-                title={
-                  showPriceDetails ? "Masquer le détail" : "Voir le détail"
-                }
-              >
-                {showPriceDetails ? "−" : "+"}
-              </button>
+              <>
+                <button
+                  className="copy-button"
+                  onClick={handleCopyPrice}
+                  title="Copier le prix"
+                  aria-label="Copier le prix"
+                >
+                  <Copy size={16} />
+                </button>
+                <button
+                  className="detail-toggle-button"
+                  onClick={() => setShowPriceDetails(!showPriceDetails)}
+                  title={
+                    showPriceDetails ? "Masquer le détail" : "Voir le détail"
+                  }
+                >
+                  {showPriceDetails ? (
+                    <ChevronUp size={16} />
+                  ) : (
+                    <ChevronDown size={16} />
+                  )}
+                </button>
+              </>
             )}
           </div>
         </div>
